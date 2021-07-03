@@ -23,7 +23,11 @@ type_final_fn='Replicates'
 stop=False
 
 prefix='Myanmar study'
-subdir='myanmar/'
+#subdir='myanmar/'
+
+subdir=sys.argv[1]
+
+#print()
 xls_files=[subdir+x for x in os.listdir(subdir) if x.startswith(prefix)]
 
 print('\nI found', str(len(xls_files)), '.xls files in the \'' + subdir + '\' subdirectory starting with the \''+prefix+'\' prefix.\n\nNamely:\n')
@@ -110,7 +114,7 @@ sorted_snd_indices=[sample_name_data_to_sort.index(x) for x in sorted_nicely(sam
 book = xlwt.Workbook(type_final_fn)
 sh = book.add_sheet(type_final_fn)
 
-other_fields=['Sample Name','Target Name','Cт Rpl 1','Cт Rpl 2','Cт Mean','Cт SD','Qnt Rpl 1','Qnt Rpl 2','Quantity Mean','Quantity SD']
+other_fields=['Sample Name','Target Name','Cq Rpl 1','Cq Rpl 2','Cq Mean','Cq SD','Qnt Rpl 1','Qnt Rpl 2','Quantity Mean','Quantity SD']
 
 for i in range(len(other_fields)):
 	sh.write(0, i, other_fields[i])
