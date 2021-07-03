@@ -23,19 +23,21 @@ type_final_fn='Replicates'
 stop=False
 
 prefix='Myanmar study'
-#subdir='myanmar/'
 
-subdir=sys.argv[1]
+input_subdir=sys.argv[1]
 
-#print()
-xls_files=[subdir+x for x in os.listdir(subdir) if x.startswith(prefix)]
+if input_subdir[:-1]!='/':
+	input_subdir+='/'
 
-print('\nI found', str(len(xls_files)), '.xls files in the \'' + subdir + '\' subdirectory starting with the \''+prefix+'\' prefix.\n\nNamely:\n')
+xls_files=[input_subdir+x for x in os.listdir(input_subdir) if x.endswith('.xls') or x.endswith('.xlsx')]
+xls_files=[x for x in xls_files if not x.startswith('.')]
+
+print('\nI found', str(len(xls_files)), '.xls files in the "' + input_subdir + '" input_subdirectory (subfolder):\n')
 
 i=0
 for x in xls_files:
 	i+=1
-	print('\t',str(i)+')'+' \''+x[len(subdir):]+'\'')
+	print(' '*4,str(i)+')'+' \''+x[len(input_subdir):]+'\'')
 
 print()
 
@@ -132,5 +134,15 @@ for i in sorted_snd_indices:
 				break
 
 timestr = time.strftime("%d-%m-%Y_%H-%-M-%S")
-filename=type_final_fn + ' - ' + timestr + '.xls'
+
+output_subdir=input_subdir.lstrip('input/')
+output_subdir='output/'+output_subdir
+
+if not os.path.exists(output_subdir):
+    os.makedirs(output_subdir)
+
+filename=output_subdir + type_final_fn + ' - ' + timestr + '.xls'
 book.save(filename)
+
+print('\nThe results were saved at:\n')
+print(' '*4,'>',filename)
