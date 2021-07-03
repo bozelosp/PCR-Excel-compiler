@@ -22,22 +22,32 @@ type_final_fn='Replicates'
 
 stop=False
 
-prefix='Myanmar study'
+#prefix='Myanmar study'
 
 input_subdir=sys.argv[1]
 
-if input_subdir[:-1]!='/':
+if input_subdir[-1]!='/':
 	input_subdir+='/'
+
+if not os.path.exists(input_subdir):
+	print('\n\n'+' '*4,'> The path you used to indicate the input subdirectory doesn\'t exist!\n')
+	print(' '*4,'> "'+input_subdir+'" ? Please check again in case there is a typo\n\n')
+	sys.exit()
 
 xls_files=[input_subdir+x for x in os.listdir(input_subdir) if x.endswith('.xls') or x.endswith('.xlsx')]
 xls_files=[x for x in xls_files if not x.startswith('.')]
 
-print('\nI found', str(len(xls_files)), '.xls files in the "' + input_subdir + '" input_subdirectory (subfolder):\n')
+if len(xls_files)==0:
+	print('\n\n'+' '*4,'> I couldn\'t find any .xls files in input subdirectory you indicated :-/\n\n')
+	sys.exit()
+
+print('\n','='*50)
+print('\n\nI found', str(len(xls_files)), '.xls files in the "' + input_subdir + '" input_subdirectory (subfolder):\n')
 
 i=0
 for x in xls_files:
 	i+=1
-	print(' '*4,str(i)+')'+' \''+x[len(input_subdir):]+'\'')
+	print(' '*4,str(i)+'.'+' "'+x[len(input_subdir):]+'"')
 
 print()
 
@@ -139,10 +149,11 @@ output_subdir=input_subdir.lstrip('input/')
 output_subdir='output/'+output_subdir
 
 if not os.path.exists(output_subdir):
-    os.makedirs(output_subdir)
+	os.makedirs(output_subdir)
 
 filename=output_subdir + type_final_fn + ' - ' + timestr + '.xls'
 book.save(filename)
 
 print('\nThe results were saved at:\n')
-print(' '*4,'>',filename)
+print(' '*4,'>>','"'+filename+'"\n\n')
+print('='*50,'\n')
